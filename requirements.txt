@@ -4,3 +4,6 @@ celery
 redis
 pydantic
 pydantic-settings
+pymysql
+sqlalchemy
+cryptography
