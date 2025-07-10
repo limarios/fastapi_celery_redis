@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Text
 from datetime import datetime
-from app.models.base import Base
+from app.core.db import Base
 
 class Worker(Base):
     __tablename__ = "workers"
@@ -11,3 +11,4 @@ class Worker(Base):
     status = Column(String(50), nullable=False, default="AGENDADO")
     data_inicio = Column(DateTime, default=datetime.utcnow)
     data_fim = Column(DateTime, nullable=True)
+    mensagem_erro = Column(Text, nullable=True)
