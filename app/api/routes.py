@@ -1,9 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from celery.result import AsyncResult
 from app.core.celery_app import celery_app
 from app.services.automacao import executar_automacao
-from app.core.db import SessionLocal
+from app.core.db import SessionLocal, Session, get_db
 from app.models.worker import Worker
 
 router = APIRouter()
@@ -12,7 +12,7 @@ class AutomacaoInput(BaseModel):
     cliente_id: int
 
 @router.post("/executar")
-def start_automacao(payload: AutomacaoInput):
+def start_automacao(payload: AutomacaoInput, db: Session = Depends(get_db)):
     task = executar_automacao.delay(payload.cliente_id)
     db = SessionLocal()
     try:
