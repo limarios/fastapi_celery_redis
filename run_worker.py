@@ -1,2 +1,4 @@
 from app.core.celery_app import celery_app
-from app.services import automacao
+
+if __name__ == "__main__":
+    celery_app.worker_main(["worker", "--loglevel=info"])

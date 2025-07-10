@@ -10,14 +10,19 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - mysql
+    env_file:
+      - .env
 
   worker:
     build: .
-    command: celery -A run_worker worker --loglevel=info
-    volumes:
-      - .:/code
+    command: celery -A app.core.celery_app worker --loglevel=info
     depends_on:
       - redis
+      - api
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
 
   redis:
     image: redis:7
